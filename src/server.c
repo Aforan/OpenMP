@@ -29,6 +29,6 @@ void printTweets() {
 	int i;
 	
 	for(i = 0; i < num_tweets; i++) {
-		fprintf(stdout, "Tweet %d: %s\n", i, tweets[i]);
+		fprintf(stdout, "Tweet %d: %s", i, tweets[i]);
 	} 
 }
