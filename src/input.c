@@ -1,8 +1,5 @@
 #include "input.h"
 
-	char line[BUFFER_LENGTH];
-	char* args[MAX_ARGS];
-
 void prompt() {
 	fprintf(stderr, "Enter Command\n");
 	getInput(line);
@@ -13,6 +10,7 @@ void prompt() {
 void setupInput() {
 	isCloseRequested = 0;
 }
+
 
 void getInput(char* line) {
 	memset(line, '\0', sizeof(line));
@@ -74,14 +72,17 @@ void action() {
 	if(flags[QUIT_FLAG]) {
 		isCloseRequested = 1;
 	} if(flags[SEND_FLAG]) {
-		sendTweet();
+		inputTweet();
 	} if(flags[READ_FLAG]) {
 		readTweets();
 	}
 }
 
 void inputTweet() {
-	fprintf(stdout, "sending\n");
+	fprintf(stdout, "Enter your tweet\n");
+
+	memset(tweetBuffer, '\0', sizeof(tweetBuffer));
+	char* t = fgets(tweetBuffer, MAX_TWEET_SIZE, stdin);
 }
 
 void readTweets() {

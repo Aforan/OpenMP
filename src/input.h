@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "server.h"
+
 #define BUFFER_LENGTH 	64
 #define DELIMITERS 		" \n\t"
 #define MAX_ARGS 		64
@@ -19,6 +21,11 @@ int isCloseRequested;
 int no_input_flag;
 
 int flags[MAX_FLAGS];
+
+
+char line[BUFFER_LENGTH];
+char* args[MAX_ARGS];
+char tweetBuffer[MAX_TWEET_SIZE];
 
 void inputLoop();
 void getInput(char*);

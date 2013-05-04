@@ -45,10 +45,12 @@ int main(int argc, char **argv) {
 	if(tid == 0) {
 		startServer();
 		prompt();
-		MPI_Recv(buf, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+		MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, 1, MPI_ANY_TAG, MPI_COMM_WORLD);
 	} else if(tid == 1) {
 		startClient();
 		MPI_Recv(buf, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+
+		fprintf(stderr, "Server got the tweet %s\n", buf);
 	}
 
 	MPI_Finalize();

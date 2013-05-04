@@ -1,6 +1,5 @@
 #include "server.h"
 
-
 void startServer() {
 	num_tweets = 0;
 	fprintf(stderr, "starting server\n");
