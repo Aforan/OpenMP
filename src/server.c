@@ -3,6 +3,7 @@
 
 void startServer() {
 	num_tweets = 0;
+	fprintf(stderr, "starting server\n");
 }
 
 void sendTweet(char* tweet) {
