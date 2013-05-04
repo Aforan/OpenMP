@@ -6,7 +6,9 @@ void startServer() {
 }
 
 void sendTweet(char* tweet) {
-	if(!sizeof(tweet) < MAX_TWEET_SIZE) {
+	fprintf(stderr, "DEBUG:	tweet size is %d\n", sizeof(tweet));
+	
+	if(sizeof(tweet) >= MAX_TWEET_SIZE) {
 		accepted = 0;
 		fprintf(stderr, "Tweet too long, not accepted\n");
 		return;
