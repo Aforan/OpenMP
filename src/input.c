@@ -28,18 +28,19 @@ void action();
 void inCheck(char**);
 void sendTweet();
 void readTweets();
+void setupInput();
 
-void inputLoop() {
+void prompt() {
+	fprintf(stderr, "Enter Command\n");
+	getInput(line);
+	getArgs(line, args);
+	action();
+}
+
+void setupInput() {
 	isCloseRequested = 0;
 	char line[BUFFER_LENGTH];
 	char* args[MAX_ARGS];
-
-	while(!isCloseRequested) {
-		fprintf(stderr, "DEBUG: Start of Input Loop\n");
-		getInput(line);
-		getArgs(line, args);
-		action();
-	}
 }
 
 void getInput(char* line) {
