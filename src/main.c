@@ -14,6 +14,9 @@
 #define SHOULD_CLOSE_TAG		4
 #define READY_TO_CLOSE_TAG		5
 
+#define CLIENT_DEST 0
+#define SERVER_DEST 1
+
 void serverLoop();
 void clientLoop();
 
@@ -43,10 +46,10 @@ int main(int argc, char **argv) {
 	gethostname(cpu_name,80);
 
 	/*	Start the client and the server, don't want to start more than one client*/
-	if(tid == 0) {
+	if(tid == CLIENT_DEST) {
 		startClient();
 		clientLoop();
-	} else if(tid == 1) {
+	} else if(tid == SERVER_DEST) {
 		startServer();
 		serverLoop();		
 	}
@@ -73,15 +76,15 @@ void serverLoop() {
 
 			//	Check if accepted and respond accordingly
 			if(accepted) {
-				MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, TWEET_ACCEPTED_TAG, MPI_ANY_TAG, MPI_COMM_WORLD);
+				MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, TWEET_ACCEPTED_TAG, MPI_COMM_WORLD);
 			} else {
-				MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, TWEET_NOT_ACCEPTED_TAG, MPI_ANY_TAG, MPI_COMM_WORLD);
+				MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, TWEET_NOT_ACCEPTED_TAG, MPI_COMM_WORLD);
 			}
 
 		//	If the tag is should close, get ready and send ready to close message to client
 		} else if (status.MPI_TAG == SHOULD_CLOSE_TAG) {
 			shouldClose = 1;
-			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, READY_TO_CLOSE_TAG, MPI_ANY_TAG, MPI_COMM_WORLD);
+			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, READY_TO_CLOSE_TAG, MPI_COMM_WORLD);
 		}
 	}
 }
@@ -97,12 +100,12 @@ void clientLoop() {
 
 		//	As long as user is not requesting close, send the tweet, and receive the response (can just ignore it for now)
 		if(!isCloseRequested) {
-			MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, TWEET_SEND_TAG, MPI_ANY_TAG, MPI_COMM_WORLD);
+			MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_SEND_TAG, MPI_COMM_WORLD);
 			MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 		} else {
 
 			//	If the user has requested close, tell the server and wait for it to be ready to close.
-			MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SHOULD_CLOSE_TAG, MPI_ANY_TAG, MPI_COMM_WORLD);
+			MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, SHOULD_CLOSE_TAG, MPI_COMM_WORLD);
 			MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 		
 			shouldClose = 1;
