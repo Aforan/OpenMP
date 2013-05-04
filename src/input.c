@@ -58,6 +58,8 @@ void inCheck(char** args) {
 			flags[QUIT_FLAG] = 1;
 		} else if(!strcmp(*arg, SEND)) {
 			flags[SEND_FLAG] = 1;
+		} else if(!strcmp(*arg, READ)) {
+			flags[READ_FLAG] = 1;
 		} else {
 			fprintf(stdout, "Invalid input use help for commands\n");
 		}
@@ -69,6 +71,7 @@ void flushFlags() {
 }
 
 void action() {
+	read_flag = 0;
 	if(flags[QUIT_FLAG]) {
 		isCloseRequested = 1;
 	} if(flags[SEND_FLAG]) {
@@ -87,4 +90,5 @@ void inputTweet() {
 
 void readTweets() {
 	fprintf(stdout, "reading\n");
+	read_flag = 1;
 }

@@ -21,7 +21,7 @@ int isCloseRequested;
 int no_input_flag;
 
 int flags[MAX_FLAGS];
-
+int read_flag;
 
 char line[BUFFER_LENGTH];
 char* args[MAX_ARGS];

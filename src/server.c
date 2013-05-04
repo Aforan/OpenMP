@@ -2,12 +2,11 @@
 
 void startServer() {
 	num_tweets = 0;
-	fprintf(stderr, "starting server\n");
 }
 
 void sendTweet(char* tweet) {
 	fprintf(stderr, "DEBUG:	tweet size is %d\n", sizeof(tweet));
-	
+
 	if(sizeof(tweet) >= MAX_TWEET_SIZE) {
 		accepted = 0;
 		fprintf(stderr, "Tweet too long, not accepted\n");
@@ -23,4 +22,13 @@ void sendTweet(char* tweet) {
 	strcpy(tweets[num_tweets], tweet);
 	num_tweets++;
 	accepted = 1;
+}
+
+void printTweets() {
+	fprintf(stdout, "No Tweets: %d\n", num_tweets);
+	int i;
+	
+	for(i = 0; i < num_tweets; i++) {
+		fprintf(stdout, "Tweet %d: %s\n", i, tweets[i]);
+	} 
 }

@@ -13,6 +13,7 @@
 #define TWEET_NOT_ACCEPTED_TAG	3
 #define SHOULD_CLOSE_TAG		4
 #define READY_TO_CLOSE_TAG		5
+#define PRINT_DONE_TAG			6
 
 #define CLIENT_DEST 0
 #define SERVER_DEST 1
@@ -82,6 +83,9 @@ void serverLoop() {
 			}
 
 		//	If the tag is should close, get ready and send ready to close message to client
+		} else if (status.MPI_TAG == TWEET_SEND_TAG) {
+			printTweets();
+			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, PRINT_DONE_TAG, MPI_COMM_WORLD);
 		} else if (status.MPI_TAG == SHOULD_CLOSE_TAG) {
 			shouldClose = 1;
 			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, READY_TO_CLOSE_TAG, MPI_COMM_WORLD);
@@ -100,8 +104,15 @@ void clientLoop() {
 
 		//	As long as user is not requesting close, send the tweet, and receive the response (can just ignore it for now)
 		if(!isCloseRequested) {
-			MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_SEND_TAG, MPI_COMM_WORLD);
-			MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+			//	If the user requested a read, tell the server
+			if(read_flag) {
+				MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_READ_TAG, MPI_COMM_WORLD);
+				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+			} else {
+			//	If they didn't, they must be sending a tweet, tell the server
+				MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_SEND_TAG, MPI_COMM_WORLD);
+				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+			}
 		} else {
 
 			//	If the user has requested close, tell the server and wait for it to be ready to close.
