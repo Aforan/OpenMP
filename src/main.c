@@ -83,7 +83,7 @@ void serverLoop() {
 			}
 
 		//	If the tag is should close, get ready and send ready to close message to client
-		} else if (status.MPI_TAG == TWEET_SEND_TAG) {
+		} else if (status.MPI_TAG == TWEET_READ_TAG) {
 			printTweets();
 			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, PRINT_DONE_TAG, MPI_COMM_WORLD);
 		} else if (status.MPI_TAG == SHOULD_CLOSE_TAG) {
