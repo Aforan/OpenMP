@@ -1,5 +1,4 @@
 #include "client.h"
-#include "input.h"
 
 void startClient() {
 }
