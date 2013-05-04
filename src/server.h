@@ -6,7 +6,7 @@
 
 char tweets[MAX_TWEETS][MAX_TWEET_SIZE];
 int num_tweets;
-
+int accepted;
 
 void startServer();
 void sendTweet(char*);
