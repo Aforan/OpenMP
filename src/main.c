@@ -49,13 +49,14 @@ int main(int argc, char **argv) {
 		MPI_Recv(buf, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
 		fprintf(stderr, "Client Done\n");
+		MPI_Finalize();
 	} else if(tid == 1) {
 		startClient();
 		MPI_Recv(buf, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 		fprintf(stderr, "Server got the tweet %s\n", buf);
 		MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, 0, MPI_ANY_TAG, MPI_COMM_WORLD);
+		MPI_Finalize();
 	}
-
-	MPI_Finalize();
+	
 	return(0);
 }
