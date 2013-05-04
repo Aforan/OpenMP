@@ -38,17 +38,22 @@ int main(int argc, char **argv) {
 	gethostname(cpu_name,80);
 
 
+	MPI_Status status;
+	char buf[MAX_TWEET_SIZE];
+
 	/*	Start the client and the server, don't want to start more than one client*/
-	if(nthreads == 0) {
+	if(tid == 0) {
 		startServer();
-	} else if(nthreads == 1) {
+	} else if(tid == 1) {
 		startClient();
 	}
 
-	if(nthreads == 1) {
+	if(tid == 1) {
 		prompt();
+	} else if(tid == 2) {
+		MPI_Recv(buf, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);	
 	}
-
+	
 	MPI_Finalize();
 	return(0);
 }
