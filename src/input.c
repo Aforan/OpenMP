@@ -72,6 +72,7 @@ void flushFlags() {
 
 void action() {
 	read_flag = 0;
+	send_flag = 0;
 	if(flags[QUIT_FLAG]) {
 		isCloseRequested = 1;
 	} if(flags[SEND_FLAG]) {
@@ -90,6 +91,8 @@ void inputTweet() {
 	//	Flush the rest of the stdin buffer
 	char c;
 	while((c = fgetc(stdin) != 'n') && c != EOF) ;
+
+	send_flag = 1;
 }
 
 void readTweets() {
