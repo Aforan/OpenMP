@@ -87,20 +87,17 @@ void inputTweet() {
 
 	memset(tweetBuffer, '\0', strlen(tweetBuffer) * sizeof(char));
 	char* t = fgets(tweetBuffer, MAX_TWEET_SIZE, stdin);
-//	fprintf(stderr, "DEBUG: Got the tweet\n");
 
 	//	Flush the rest of the stdin buffer, if the tweet is longer
 	//	Than the buffer (eg, the last item is not a null char)
 
 	if (tweetBuffer[MAX_TWEET_SIZE-1] != '\0') {
 		char c;
-		while(fgetc(stdin) != '\n') {
-//			fprintf(stderr, "DEBUG: Throwing away stoof\n");
-;
-		}
+		while((c = fgetc(stdin)) != '\n')
+			fprintf(stderr, "discarding %c ", c);
+		fprintf(stderr, "\n");
 	}
 
-//	fprintf(stderr, "DEBUG: Done with While\n");
 	send_flag = 1;
 }
 

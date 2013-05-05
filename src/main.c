@@ -102,7 +102,6 @@ void clientLoop() {
 		
 		//	Prompt the user for info
 		prompt();
-		fprintf(stderr, "DEBUG: prompt returned read_flag = %d, send_flag = %d\n", read_flag, send_flag);
 
 		//	As long as user is not requesting close, send the tweet, and receive the response (can just ignore it for now)
 		if(!isCloseRequested) {
@@ -112,7 +111,6 @@ void clientLoop() {
 				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 			} else if(send_flag) {
 			//	If they didn't, they must be sending a tweet, tell the server
-				fprintf(stderr, "DEBUG: Got Send Flag\n");
 				MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_SEND_TAG, MPI_COMM_WORLD);
 				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 			}

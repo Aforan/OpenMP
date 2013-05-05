@@ -5,8 +5,6 @@ void startServer() {
 }
 
 void sendTweet(char* tweet) {
-	fprintf(stderr, "DEBUG:	tweet size is %d\n", strlen(tweet));
-
 	//	Check tweet size
 	if(strlen(tweet) >= MAX_TWEET_SIZE) {
 		accepted = 0;
