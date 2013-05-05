@@ -82,10 +82,11 @@ void serverLoop() {
 				MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, TWEET_NOT_ACCEPTED_TAG, MPI_COMM_WORLD);
 			}
 
-		//	If the tag is should close, get ready and send ready to close message to client
+		//	Pretty much the same thing for reading tweets
 		} else if (status.MPI_TAG == TWEET_READ_TAG) {
 			printTweets();
 			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, PRINT_DONE_TAG, MPI_COMM_WORLD);
+		//	If the tag is should close, get ready and send ready to close message to client
 		} else if (status.MPI_TAG == SHOULD_CLOSE_TAG) {
 			shouldClose = 1;
 			MPI_Send(buf, MAX_TWEET_SIZE, MPI_CHAR, CLIENT_DEST, READY_TO_CLOSE_TAG, MPI_COMM_WORLD);
@@ -114,7 +115,6 @@ void clientLoop() {
 				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 			}
 		} else {
-
 			//	If the user has requested close, tell the server and wait for it to be ready to close.
 			MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, SHOULD_CLOSE_TAG, MPI_COMM_WORLD);
 			MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);

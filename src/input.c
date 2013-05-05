@@ -22,6 +22,8 @@ void getInput(char* line) {
 	} else {
 		no_input_flag = 0;
 	}
+
+	fflush(stdin);
 }
 
 /*	
