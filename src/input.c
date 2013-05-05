@@ -22,11 +22,6 @@ void getInput(char* line) {
 	} else {
 		no_input_flag = 0;
 	}
-
-	char throw_away[BUFFER_LENGTH];
-
-	//	Properly flush the stdin
-	while((t = fgets(throw_away, BUFFER_LENGTH, stdin)) != NULL) ;
 }
 
 /*	
@@ -89,8 +84,12 @@ void action() {
 void inputTweet() {
 	fprintf(stdout, "Enter your tweet\n");
 
-	memset(tweetBuffer, '\0', sizeof(tweetBuffer));
+	memset(tweetBuffer, '\0', strlen(tweetBuffer) * sizeof(char));
 	char* t = fgets(tweetBuffer, MAX_TWEET_SIZE, stdin);
+
+	//	Flush the rest of the stdin buffer
+	char c;
+	while((c = fgetc(stdin) != 'n') && c != EOF) ;
 }
 
 void readTweets() {
