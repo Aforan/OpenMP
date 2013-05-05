@@ -23,7 +23,10 @@ void getInput(char* line) {
 		no_input_flag = 0;
 	}
 
-	fflush(stdin);
+	char c;
+
+	//	Properly flush the stdin
+	while((c = fgetc(stdin)) != '\n' && c != EOF) ;
 }
 
 /*	

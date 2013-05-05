@@ -109,7 +109,7 @@ void clientLoop() {
 			if(read_flag) {
 				MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_READ_TAG, MPI_COMM_WORLD);
 				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-			} else {
+			} else if(send_flag) {
 			//	If they didn't, they must be sending a tweet, tell the server
 				MPI_Send(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, SERVER_DEST, TWEET_SEND_TAG, MPI_COMM_WORLD);
 				MPI_Recv(tweetBuffer, MAX_TWEET_SIZE, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
