@@ -5,7 +5,7 @@
 
 #include "server.h"
 
-#define BUFFER_LENGTH 	64
+#define BUFFER_LENGTH 	1024
 #define DELIMITERS 		" \n\t"
 #define MAX_ARGS 		64
 #define MAX_FLAGS		3
