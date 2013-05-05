@@ -23,10 +23,10 @@ void getInput(char* line) {
 		no_input_flag = 0;
 	}
 
-	char c;
+	char throw_away[BUFFER_LENGTH];
 
 	//	Properly flush the stdin
-	while((c = fgetc(stdin)) != '\n' && c != EOF) ;
+	while((t = fgets(throw_away, BUFFER_LENGTH, stdin)) != NULL) ;
 }
 
 /*	
